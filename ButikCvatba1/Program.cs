@@ -1,3 +1,4 @@
+using ASPShopBag.Services;
 using ButikCvatba1.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,8 @@ namespace ButikCvatba1
 
             builder.Services.AddDefaultIdentity<Client>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders()
                 .AddDefaultTokenProviders();
             builder.Services.AddControllersWithViews();
             builder.Services.AddControllers(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
@@ -36,7 +38,7 @@ namespace ButikCvatba1
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.PrepareDataBase().Wait();//!!!!
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

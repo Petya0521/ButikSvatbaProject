@@ -12,19 +12,21 @@ namespace ButikCvatba1
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ;
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
+            IMvcBuilder buildMVC = builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
             builder.Services.AddDefaultIdentity<Client>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders()
-                .AddDefaultTokenProviders();
-            builder.Services.AddControllersWithViews();
+            .AddDefaultTokenProviders();
+ 
+            
             builder.Services.AddControllers(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

@@ -28,18 +28,18 @@ namespace ButikCvatba1.Controllers
         {
             if (User.IsInRole("Admin"))
             {
-                var borsaDbContext = _context.Orders
+                var applicationDbContext = _context.Orders
                                     .Include(o => o.Clients)
                                     .Include(o => o.Products);
-                return View(await borsaDbContext.ToListAsync());
+                return View(await applicationDbContext.ToListAsync());
             }
             else
             {
-                var borsaDbContext = _context.Orders
+                var applicationDbContext = _context.Orders
                                     .Include(o => o.Clients)
                                     .Include(o => o.Products)
                                     .Where(x => x.ClientId == _userManager.GetUserId(User));
-                return View(await borsaDbContext.ToListAsync());
+                return View(await applicationDbContext.ToListAsync());
             }
 
         }
@@ -127,7 +127,7 @@ namespace ButikCvatba1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ProductId,ClientId,Quantity")] Order order)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ProductId,Quantity")] Order order)
         {
             if (id != order.Id)
             {
